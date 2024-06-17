@@ -1,0 +1,271 @@
+Initialize the Project
+
+mkdir crm-system
+cd crm-system
+npm init -y
+
+Create Directory Structure
+
+crm-system/
+├── models/
+│   ├── index.js
+│   ├── customer.js
+│   ├── contact.js
+│   ├── opportunity.js
+│   └── interaction.js
+├── routes/
+│   ├── customers.js
+│   ├── contacts.js
+│   ├── opportunities.js
+│   └── interactions.js
+├── controllers/
+│   ├── customerController.js
+│   ├── contactController.js
+│   ├── opportunityController.js
+│   └── interactionController.js
+├── config/
+│   └── database.js
+├── app.js
+└── server.js
+
+Setup Database Configuration (config/database.js)
+
+const { Sequelize } = require('sequelize');
+
+const sequelize = new Sequelize('crm', 'username', 'password', {
+  host: 'localhost',
+  dialect: 'postgres',
+});
+
+module.exports = sequelize;
+
+Define Models (models/index.js, customer.js, contact.js, opportunity.js, interaction.js)
+
+models/index.js
+
+Const Sequelize = require('sequelize');
+const sequelize = require('../config/database');
+
+const Customer = require('./customer')(sequelize, Sequelize);
+const Contact = require('./contact')(sequelize, Sequelize);
+const Opportunity = require('./opportunity')(sequelize, Sequelize);
+const Interaction = require('./interaction')(sequelize, Sequelize);
+
+// Associations
+Customer.hasMany(Contact, { foreignKey: 'customer_id' });
+Customer.hasMany(Opportunity, { foreignKey: 'customer_id' });
+Customer.hasMany(Interaction, { foreignKey: 'customer_id' });
+Contact.hasMany(Interaction, { foreignKey: 'contact_id' });
+
+module.exports = {
+  sequelize,
+  Customer,
+  Contact,
+  Opportunity,
+  Interaction
+};
+
+models/customer.js
+
+module.exports = (sequelize, DataTypes) => {
+  const Customer = sequelize.define('Customer', {
+    customer_id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true
+    },
+    name: DataTypes.STRING,
+    email: DataTypes.STRING,
+    phone: DataTypes.STRING,
+    address: DataTypes.STRING,
+    created_at: DataTypes.DATE,
+    updated_at: DataTypes.DATE
+  });
+
+  return Customer;
+};
+
+models/contact.js
+
+module.exports = (sequelize, DataTypes) => {
+  const Contact = sequelize.define('Contact', {
+    contact_id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true
+    },
+    customer_id: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'Customers',
+        key: 'customer_id'
+      }
+    },
+    name: DataTypes.STRING,
+    email: DataTypes.STRING,
+    phone: DataTypes.STRING,
+    position: DataTypes.STRING,
+    created_at: DataTypes.DATE,
+    updated_at: DataTypes.DATE
+  });
+
+  return Contact;
+};
+
+models/opportunity.js
+
+module.exports = (sequelize, DataTypes) => {
+  const Opportunity = sequelize.define('Opportunity', {
+    opportunity_id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true
+    },
+    customer_id: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'Customers',
+        key: 'customer_id'
+      }
+    },
+    title: DataTypes.STRING,
+    description: DataTypes.TEXT,
+    stage: DataTypes.STRING,
+    value: DataTypes.FLOAT,
+    close_date: DataTypes.DATE,
+    created_at: DataTypes.DATE,
+    updated_at: DataTypes.DATE
+  });
+
+  return Opportunity;
+};
+
+models/interaction.js
+
+module.exports = (sequelize, DataTypes) => {
+  const Interaction = sequelize.define('Interaction', {
+    interaction_id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true
+    },
+    customer_id: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'Customers',
+        key: 'customer_id'
+      }
+    },
+    contact_id: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'Contacts',
+        key: 'contact_id'
+      }
+    },
+    type: DataTypes.STRING,
+    date: DataTypes.DATE,
+    notes: DataTypes.TEXT,
+    created_at: DataTypes.DATE,
+    updated_at: DataTypes.DATE
+  });
+
+  return Interaction;
+};
+
+Create Controllers (controllers/customerController.js, contactController.js, opportunityController.js, interactionController.js)
+
+controllers/customerController.js
+
+const { Customer } = require('../models');
+
+exports.getAllCustomers = async (req, res) => {
+  try {
+    const customers = await Customer.findAll();
+    res.json(customers);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.getCustomerById = async (req, res) => {
+  try {
+    const customer = await Customer.findByPk(req.params.id);
+    res.json(customer);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.createCustomer = async (req, res) => {
+  try {
+    const customer = await Customer.create(req.body);
+    res.json(customer);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.updateCustomer = async (req, res) => {
+  try {
+const customer = await Customer.findByPk(req.params.id);
+    await customer.update(req.body);
+    res.json(customer);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.deleteCustomer = async (req, res) => {
+  try {
+    const customer = await Customer.findByPk(req.params.id);
+    await customer.destroy();
+    res.json({ message: 'Customer deleted' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+controllers/opportunityController.js
+
+const { Opportunity } = require('../models');
+
+exports.getAllOpportunities = async (req, res) => {
+  try {
+    const opportunities = await Opportunity.findAll();
+    res.json(opportunities);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.getOpportunityById = async (req, res) => {
+  try {
+    const opportunity = await Opportunity.findByPk(req.params.id);
+    res.json(opportunity);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.createOpportunity = async (req, res) => {
+  try {
+    const opportunity = await Opportunity.create(req.body);
+    res.json(opportunity);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.updateOpportunity = async (req, res) => {
+  try {
+    const opportunity = await Opportunity.findByPk(req.params.id);
+    await opportunity.update(req.body);
+res.json(opportunity);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
+
