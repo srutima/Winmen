@@ -1,0 +1,189 @@
+const { Project, Task, Team, Timeline } = require('../models');
+
+exports.getAllProjects = async (req, res) => {
+  try {
+    const projects = await Project.findAll();
+    res.json(projects);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.getProjectById = async (req, res) => {
+  try {
+    const project = await Project.findByPk(req.params.id);
+    res.json(project);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.createProject = async (req, res) => {
+  try {
+    const project = await Project.create(req.body);
+    res.json(project);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.updateProject = async (req, res) => {
+  try {
+    const project = await Project.findByPk(req.params.id);
+    await project.update(req.body);
+    res.json(project);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.deleteProject = async (req, res) => {
+  try {
+    const project = await Project.findByPk(req.params.id);
+    await project.destroy();
+    res.json({ message: 'Project deleted' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.getAllTasks = async (req, res) => {
+  try {
+    const tasks = await Task.findAll();
+    res.json(tasks);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.getTaskById = async (req, res) => {
+  try {
+    const task = await Task.findByPk(req.params.id);
+    res.json(task);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.createTask = async (req, res) => {
+  try {
+    const task = await Task.create(req.body);
+    res.json(task);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.updateTask = async (req, res) => {
+  try {
+    const task = await Task.findByPk(req.params.id);
+    await task.update(req.body);
+    res.json(task);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.deleteTask = async (req, res) => {
+  try {
+    const task = await Task.findByPk(req.params.id);
+    await task.destroy();
+    res.json({ message: 'Task deleted' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.getAllTeams = async (req, res) => {
+  try {
+    const teams = await Team.findAll();
+    res.json(teams);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.getTeamById = async (req, res) => {
+  try {
+    const team = await Team.findByPk(req.params.id);
+    res.json(team);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.createTeam = async (req, res) => {
+  try {
+    const team = await Team.create(req.body);
+    res.json(team);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.updateTeam = async (req, res) => {
+  try {
+    const team = await Team.findByPk(req.params.id);
+    await team.update(req.body);
+    res.json(team);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.deleteTeam = async (req, res) => {
+  try {
+    const team = await Team.findByPk(req.params.id);
+    await team.destroy();
+    res.json({ message: 'Team deleted' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.getAllTimelines = async (req, res) => {
+  try {
+    const timelines = await Timeline.findAll();
+    res.json(timelines);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.getTimelineById = async (req, res) => {
+  try {
+    const timeline = await Timeline.findByPk(req.params.id);
+    res.json(timeline);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.createTimeline = async (req, res) => {
+  try {
+    const timeline = await Timeline.create(req.body);
+    res.json(timeline);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.updateTimeline = async (req, res) => {
+  try {
+    const timeline = await Timeline.findByPk(req.params.id);
+    await timeline.update(req.body);
+    res.json(timeline);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.deleteTimeline = async (req, res) => {
+  try {
+    const timeline = await Timeline.findByPk(req.params.id);
+    await timeline.destroy();
+    res.json({ message: 'Timeline deleted' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
