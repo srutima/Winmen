@@ -1,0 +1,193 @@
+const { Product, Supplier, Warehouse, Stock } = require('../models');
+
+exports.getAllProducts = async (req, res) => {
+  try {
+    const products = await Product.findAll();
+    res.json(products);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.getProductById = async (req, res) => {
+  try {
+    const product = await Product.findByPk(req.params.id);
+    res.json(product);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.createProduct = async (req, res) => {
+  try {
+    const product = await Product.create(req.body);
+    res.json(product);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.updateProduct = async (req, res) => {
+  try {
+    const product = await Product.findByPk(req.params.id);
+    await product.update(req.body);
+    res.json(product);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.deleteProduct = async (req, res) => {
+  try {
+    const product = await Product.findByPk(req.params.id);
+    await product.destroy();
+    res.json({ message: 'Product deleted' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.getAllSuppliers = async (req, res) => {
+  try {
+    const suppliers = await Supplier.findAll();
+    res.json(suppliers);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.getSupplierById = async (req, res) => {
+  try {
+    const supplier = await Supplier.findByPk(req.params.id);
+    res.json(supplier);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.createSupplier = async (req, res) => {
+  try {
+    const supplier = await Supplier.create(req.body);
+    res.json(supplier);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.updateSupplier = async (req, res) => {
+  try {
+    const supplier = await Supplier.findByPk(req.params.id);
+    await supplier.update(req.body);
+    res.json(supplier);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.deleteSupplier = async (req, res) => {
+  try {
+    const supplier = await Supplier.findByPk(req.params.id);
+    await supplier.destroy();
+    res.json({ message: 'Supplier deleted' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.getAllWarehouses = async (req, res) => {
+  try {
+    const warehouses = await Warehouse.findAll();
+    res.json(warehouses);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.getWarehouseById = async (req, res) => {
+  try {
+    const warehouse = await Warehouse.findByPk(req.params.id);
+    res.json(warehouse);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.createWarehouse = async (req, res) => {
+  try {
+    const warehouse = await Warehouse.create(req.body);
+    res.json(warehouse);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.updateWarehouse = async (req, res) => {
+  try {
+    const warehouse = await Warehouse.findByPk(req.params.id);
+    await warehouse.update(req.body);
+    res.json(warehouse);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.deleteWarehouse = async (req, res) => {
+  try {
+    const warehouse = await Warehouse.findByPk(req.params.id);
+    await warehouse.destroy();
+    res.json({ message: 'Warehouse deleted' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.getAllStock = async (req, res) => {
+  try {
+    const stock = await Stock.findAll({
+      include: [Product, Warehouse],
+    });
+    res.json(stock);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.getStockById = async (req, res) => {
+  try {
+    const stock = await Stock.findByPk(req.params.id, {
+      include: [Product, Warehouse],
+    });
+    res.json(stock);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.createStock = async (req, res) => {
+  try {
+    const stock = await Stock.create(req.body);
+    res.json(stock);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.updateStock = async (req, res) => {
+  try {
+    const stock = await Stock.findByPk(req.params.id);
+    await stock.update(req.body);
+    res.json(stock);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.deleteStock = async (req, res) => {
+  try {
+    const stock = await Stock.findByPk(req.params.id);
+    await stock.destroy();
+    res.json({ message: 'Stock deleted' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
