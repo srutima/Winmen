@@ -1,0 +1,188 @@
+const { Employee, Department, Role, PerformanceReview } = require('../models');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+
+exports.getAllEmployees = async (req, res) => {
+  try {
+    const employees = await Employee.findAll();
+    res.json(employees);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.getEmployeeById = async (req, res) => {
+  try {
+    const employee = await Employee.findByPk(req.params.id);
+    res.json(employee);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.createEmployee = async (req, res) => {
+  try {
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    const employee = await Employee.create({ ...req.body, password: hashedPassword });
+    res.json(employee);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.updateEmployee = async (req, res) => {
+  try {
+const employee = await Employee.findByPk(req.params.id);
+    await employee.update(req.body);
+    res.json(employee);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.deleteEmployee = async (req, res) => {
+  try {
+    const employee = await Employee.findByPk(req.params.id);
+    await employee.destroy();
+    res.json({ message: 'Employee deleted' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.getAllDepartments = async (req, res) => {
+  try {
+    const departments = await Department.findAll();
+    res.json(departments);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.getDepartmentById = async (req, res) => {
+  try {
+    const department = await Department.findByPk(req.params.id);
+    res.json(department);
+ } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.createDepartment = async (req, res) => {
+  try {
+    const department = await Department.create(req.body);
+    res.json(department);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.updateDepartment = async (req, res) => {
+  try {
+    const department = await Department.findByPk(req.params.id);
+    await department.update(req.body);
+    res.json(department);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.deleteDepartment = async (req, res) => {
+  try {
+    const department = await Department.findByPk(req.params.id);
+    await department.destroy();
+    res.json({ message: 'Department deleted' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+exports.getAllRoles = async (req, res) => {
+  try {
+    const roles = await Role.findAll();
+    res.json(roles);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.getRoleById = async (req, res) => {
+  try {
+    const role = await Role.findByPk(req.params.id);
+    res.json(role);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.createRole = async (req, res) => {
+  try {
+    const role = await Role.create(req.body);
+    res.json(role);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.updateRole = async (req, res) => {
+  try {
+const role = await Role.findByPk(req.params.id);
+    await role.update(req.body);
+    res.json(role);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.deleteRole = async (req, res) => {
+  try {
+    const role = await Role.findByPk(req.params.id);
+    await role.destroy();
+    res.json({ message: 'Role deleted' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.getAllPerformanceReviews = async (req, res) => {
+  try {
+    const performanceReviews = await PerformanceReview.findAll();
+    res.json(performanceReviews);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.getPerformanceReviewById = async (req, res) => {
+  try {
+    const performanceReview = await PerformanceReview.findByPk(req.params.id);
+    res.json(performanceReview);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+exports.createPerformanceReview = async (req, res) => {
+  try {
+    const performanceReview = await PerformanceReview.create(req.body);
+    res.json(performanceReview);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.updatePerformanceReview = async (req, res) => {
+  try {
+    const performanceReview = await PerformanceReview.findByPk(req.params.id);
+    await performanceReview.update(req.body);
+    res.json(performanceReview);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.deletePerformanceReview = async (req, res) => {
+  try {
+    const performanceReview = await PerformanceReview.findByPk(req.params.id);
+    await performanceReview.destroy();
+    res.json({ message: 'Performance Review deleted' });
+  } catch (err) {
+    res.status(500).json({ error
